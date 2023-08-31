@@ -54,7 +54,21 @@ public class Archivo {
 		}
 	}
 	
-	public void leer() {
+	public static String ObtenerRutaAbsoluta(String nombreArchivo) {
+		String rutaAbsoluta;
+		try {
+			rutaAbsoluta= new File(nombreArchivo).getAbsolutePath();
+			rutaAbsoluta = rutaAbsoluta.replace("\\", "\\\\");
+		}catch(SecurityException e){
+			rutaAbsoluta= null;
+		}catch(Exception e){
+			rutaAbsoluta= null;
+		}
+				
+		return rutaAbsoluta;
+	}
+	 
+	public void leer() {  
 		FileReader entrada; //rr
 		try {
 			entrada = new FileReader(ruta);
