@@ -80,6 +80,15 @@ public class Archivo {
             e.printStackTrace();
         }
     }
+    public void clearFile() {
+        try {
+            FileWriter writer = new FileWriter(path, false);
+            writer.write("");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void originalReadLines(IReadingAction<String> action) {
         try {

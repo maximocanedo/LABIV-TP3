@@ -1,7 +1,8 @@
 package ejercicio1;
 
 public class Persona {
-	public static String FILE_PATH = "F:\\Documents\\GitHub\\LABIV-TP3\\bin\\ejercicio1\\Personas.txt";
+	public static String FILE_PATH = "Personas.txt";
+	public static String RESULTS_PATH = "Resultados.txt";
     private String name;
     private String surname;
     private int dni;
@@ -43,6 +44,13 @@ public class Persona {
     	} catch(NumberFormatException e) {
     		throw new InvalidDNIException();
     	}
+    }
+    
+    public boolean equals(Object o) {
+        return (o == null || getClass() != o.getClass()) || (this == o || ((Persona) o).dni == this.dni);
+    }
+    public int hashCode() {
+    	return this.dni;
     }
 
     @Override
