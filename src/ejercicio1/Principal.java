@@ -1,9 +1,13 @@
 package ejercicio1;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import ejercicio1.Archivo;
 
 public class Principal {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		/* La funcion la hice teniendo en cuenta la funcion isNumeric de:
 		 * https://aprenderjava.net/base/comprobar-si-un-valor-es-un-numero-en-java-guia-y-ejemplos/
 		 * Importe desde https://commons.apache.org/proper/commons-lang/download_lang.cgi
@@ -18,13 +22,16 @@ public class Principal {
 			
 		}*/
 		Archivo archivo = new Archivo();
-		System.out.println(Archivo.ObtenerRutaAbsoluta("Personas.txt"));
-		String ruta= Archivo.ObtenerRutaAbsoluta("Personas.txt");
-		System.out.println(ruta); 
-		archivo.setRuta(Archivo.ObtenerRutaAbsoluta(ruta));
+		archivo.setRuta(Archivo.ObtenerRutaAbsoluta("Personas.txt"));
 		
-		archivo.leer();
+		ArrayList<Persona> personas= new ArrayList<Persona>();
 		
+		archivo.cargarPersona(personas,"-");
+
+		
+		for(int i=0; i<personas.size();i++) {
+			System.out.println(personas.get(i).getApellido());	
+		}	
 	}
 
 }

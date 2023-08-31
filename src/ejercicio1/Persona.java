@@ -4,17 +4,20 @@ public class Persona {
 	private String nombre, apellido, DNI;
 	
 	public Persona() {
-		super();
 		this.nombre = "Sin asignar";
 		this.apellido = "Sin asignar";
 		DNI = "Sin asignar";
 	}
 	
 	public Persona(String nombre, String apellido, String dNI) {
-		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		DNI = dNI;
+	}
+
+	@Override
+	public String toString() {
+		return apellido+ ", " +nombre   + ", DNI: " + DNI ;
 	}
 
 	public String getNombre() {

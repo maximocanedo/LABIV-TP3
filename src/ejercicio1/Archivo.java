@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class Archivo {
 		
@@ -53,7 +56,7 @@ public class Archivo {
 			e.printStackTrace();
 		}
 	}
-	
+	 
 	public static String ObtenerRutaAbsoluta(String nombreArchivo) {
 		String rutaAbsoluta;
 		try {
@@ -68,8 +71,9 @@ public class Archivo {
 		return rutaAbsoluta;
 	}
 	 
-	public void leer() {  
-		FileReader entrada; //rr
+	public int leer() {  
+		FileReader entrada;
+		int cantLineas=0;
 		try {
 			entrada = new FileReader(ruta);
 			BufferedReader buffer = new BufferedReader(entrada);
@@ -78,6 +82,7 @@ public class Archivo {
 			while(linea!= null) {
 				System.out.println(linea);
 				linea = buffer.readLine();
+				cantLineas++;
 			}
 			entrada.close();
 			buffer.close();
@@ -86,12 +91,52 @@ public class Archivo {
 			e.printStackTrace();
 			System.out.println("No se encontro el archvo");
 		}
+		return cantLineas;
 	}
-	
+	public void cargarPersona(ArrayList<Persona> personas, String separador) throws IOException {
+		FileReader entrada;
+		try {
+			entrada = new FileReader(ruta);
+			BufferedReader buffer = new BufferedReader(entrada);
+			
+			String linea = "";
+			while(linea!= null){
+				linea = buffer.readLine();
+				
+				try{
+					String []v= linea.split(separador);
+					personas.add(new Persona(v[0],v[1],v[2]));
+				}catch(NullPointerException e) {
+					System.out.println("A");
+
+					entrada.close();
+					buffer.close();
+					return;
+				}
+				catch(ArrayIndexOutOfBoundsException e) {		
+					System.out.println("A");
+
+					entrada.close();
+					buffer.close();
+					return;
+				}
+				
+			}
+			entrada.close();
+			buffer.close();
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("No se encontro el archvo");
+		}
+		
+}
 	///GETS SETS
 	public String getRuta() {
 		return ruta;
 	}
+	
+	
 
 
 	public void setRuta(String ruta) {
