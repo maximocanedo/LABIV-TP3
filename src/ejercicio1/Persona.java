@@ -1,5 +1,7 @@
 package ejercicio1;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Persona {
 	private String nombre, apellido, DNI;
 	
@@ -39,9 +41,19 @@ public class Persona {
 	public String getDNI() {
 		return DNI;
 	}
-
+	
 	public void setDNI(String dNI) {
 		DNI = dNI;
 	}
+	
+	public static Boolean verificarNumeroDNI(String cadenaDNI) throws DNIInvalidoException{
+		for(int i=0; i < cadenaDNI.length(); i++) {
+			if(cadenaDNI.charAt(i) < '0' || cadenaDNI.charAt(i) > '9') {
+				throw new DNIInvalidoException();
+			}		
+		}
 		
+		return true;
+	}
+
 }

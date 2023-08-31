@@ -6,8 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.TreeSet;
 
 
 public class Archivo {
@@ -93,7 +92,7 @@ public class Archivo {
 		}
 		return cantLineas;
 	}
-	public void cargarPersona(ArrayList<Persona> personas, String separador) throws IOException {
+	public void cargarPersona(TreeSet<Persona> personas, String separador) throws IOException {
 		FileReader entrada;
 		try {
 			entrada = new FileReader(ruta);
@@ -105,17 +104,17 @@ public class Archivo {
 				
 				try{
 					String []v= linea.split(separador);
-					personas.add(new Persona(v[0],v[1],v[2]));
+					if(!Persona.verificarNumeroDNI(v[0])){
+						v[2]="0";
+				}
+						personas.add(new Persona(v[0],v[1],v[2]));
+						
 				}catch(NullPointerException e) {
-					System.out.println("A");
-
 					entrada.close();
 					buffer.close();
 					return;
 				}
 				catch(ArrayIndexOutOfBoundsException e) {		
-					System.out.println("A");
-
 					entrada.close();
 					buffer.close();
 					return;
@@ -131,6 +130,26 @@ public class Archivo {
 		}
 		
 }
+	
+	public void escribirArchivo(TreeSet<Persona> personas,String ruta)throws IOException {
+		File f = new File(ruta);
+		
+		if(!f.exists()){
+			try {
+				BufferedWriter buffer = new BufferedWriter(new FileWriter(f,true));
+				for(Persona p : personas) {
+					buffer.write(p.getNombre() + "-" + p.getApellido() + "-" + ((p.getDNI() != "0") ? p.getDNI() : "DNI INVALIDO"));
+					buffer.newLine();
+				}
+				buffer.close();
+			}catch(IOException e) { 
+				e.printStackTrace();
+			}			
+		}else {
+			throw new IOException();
+		}
+	}
+	 
 	///GETS SETS
 	public String getRuta() {
 		return ruta;
