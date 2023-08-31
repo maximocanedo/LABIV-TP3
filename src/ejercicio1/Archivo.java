@@ -55,7 +55,7 @@ public class Archivo {
 	}
 	
 	public void leer() {
-		FileReader entrada;
+		FileReader entrada; //
 		try {
 			entrada = new FileReader(ruta);
 			BufferedReader buffer = new BufferedReader(entrada);
