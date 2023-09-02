@@ -1,8 +1,6 @@
 package ejercicio1;
 
-import org.apache.commons.lang3.StringUtils;
-
-public class Persona {
+public class Persona implements Comparable<Persona>{
 	private String nombre, apellido, DNI;
 	
 	public Persona() {
@@ -54,6 +52,11 @@ public class Persona {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public int compareTo(Persona obj) {
+		return this.apellido.compareTo(obj.apellido);
 	}
 
 }

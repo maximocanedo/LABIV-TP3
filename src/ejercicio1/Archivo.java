@@ -11,19 +11,54 @@ import java.util.TreeSet;
 
 public class Archivo {
 		
-	private String ruta;
+	private String path;
+	private File archivo = null;	
 	
-	public Archivo() {
-		
+	public Archivo(String rutaArchivo) throws IOException {
+		this.path=rutaArchivo;
+		archivo = new File(path);
+		if(archivo.exists() == false) {
+			throw new IOException();
+		}
 	}
 	
-	public Archivo(String ruta)
-	{
-		this.ruta = ruta;
+	public Archivo() {}
+	
+	public void leerArchivo(TreeSet<Persona> listadoPersonas) {
+		try {
+			BufferedReader bf = new BufferedReader(new FileReader(archivo));
+			String nombre, apellido;
+			String dni=null;
+			
+			String cadena=null;
+			
+			while((cadena=bf.readLine()) != null) {
+				String[] listaAux = cadena.split("-");
+				
+				if(listaAux.length == 3) {
+					nombre = listaAux[0];
+					apellido = listaAux[1];
+					try {
+						if(Persona.verificarNumeroDNI(listaAux[2])) {
+							dni= listaAux[2];
+						}
+				}catch(DNIInvalidoException err) {
+					dni="0";
+				}
+				listadoPersonas.add(new Persona(nombre,apellido,dni));			
+				}						
+			}
+			
+			bf.close();
+			
+		}catch(IOException err) {
+			System.out.println(err.getMessage());
+		}				 		
 	}
+	
 	
 	public boolean existe() {
-		File archivo = new File(ruta);
+		File archivo = new File(path);
 		if(archivo.exists())
 					return true;
 		return false;
@@ -33,7 +68,7 @@ public class Archivo {
 	public boolean crearArchivo() {
 			FileWriter escritura;
 			try {
-				escritura = new FileWriter(ruta, true);
+				escritura = new FileWriter(path, true);
 				escritura.write("");
 				escritura.close();
 				return true;
@@ -45,7 +80,7 @@ public class Archivo {
 
 	public void escribir(String palabra) {
 		try {
-			FileWriter entrada = new FileWriter(ruta, true);
+			FileWriter entrada = new FileWriter(path, true);
 			BufferedWriter buffer = new BufferedWriter(entrada);
 			buffer.write(palabra);
 			buffer.close();
@@ -74,7 +109,7 @@ public class Archivo {
 		FileReader entrada;
 		int cantLineas=0;
 		try {
-			entrada = new FileReader(ruta);
+			entrada = new FileReader(path);
 			BufferedReader buffer = new BufferedReader(entrada);
 			
 			String linea = "";
@@ -92,44 +127,7 @@ public class Archivo {
 		}
 		return cantLineas;
 	}
-	public void cargarPersona(TreeSet<Persona> personas, String separador) throws IOException {
-		FileReader entrada;
-		try {
-			entrada = new FileReader(ruta);
-			BufferedReader buffer = new BufferedReader(entrada);
-			
-			String linea = "";
-			while(linea!= null){
-				linea = buffer.readLine();
-				
-				try{
-					String []v= linea.split(separador);
-					if(!Persona.verificarNumeroDNI(v[0])){
-						v[2]="0";
-				}
-						personas.add(new Persona(v[0],v[1],v[2]));
-						
-				}catch(NullPointerException e) {
-					entrada.close();
-					buffer.close();
-					return;
-				}
-				catch(ArrayIndexOutOfBoundsException e) {		
-					entrada.close();
-					buffer.close();
-					return;
-				}
-				
-			}
-			entrada.close();
-			buffer.close();
-			 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("No se encontro el archvo");
-		}
-		
-}
+	
 	
 	public void escribirArchivo(TreeSet<Persona> personas,String ruta)throws IOException {
 		File f = new File(ruta);
@@ -152,14 +150,14 @@ public class Archivo {
 	 
 	///GETS SETS
 	public String getRuta() {
-		return ruta;
+		return path;
 	}
 	
 	
 
 
 	public void setRuta(String ruta) {
-		this.ruta = ruta;
+		this.path = ruta;
 	}
 	
 
